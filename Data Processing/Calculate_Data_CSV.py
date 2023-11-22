@@ -54,10 +54,10 @@ with open('mentes.csv', mode='w', newline='') as file:
             
             writer.writerow(data)
             print(data)
-            
+        
 #Print INI file
 #print('Port = ' + port)
-#print('Baudrate = ' + baudrate)
-#print('Gravitational Acceleration = ' + gravitational_acceleration)
-#print('Square Number = ' + square_number)
-#print('Number = ' + number)
+#print('Baudrate = ' + str(baudrate))
+#print('Gravitational Acceleration = ' + str(gravitational_acceleration))
+#print('Square Number = ' + str(square_number))
+#print('Number = ' + str(number))
