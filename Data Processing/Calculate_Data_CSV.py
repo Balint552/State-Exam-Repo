@@ -1,9 +1,21 @@
 from math import atan2
 import serial
 import csv
+import configparser
 
-ser = serial.Serial('COM4', 115200)
-g = 9.81
+#Read INI file
+config = configparser.ConfigParser()
+config.read('Setup.ini')
+
+#Read INI file value
+data_value = config['Date']
+port = data_value['Port']
+baudrate = data_value.getint('Baudrate')
+gravitational_acceleration = data_value.getfloat('GravitationalAcceleration')
+square_number = data_value.getfloat('SquareNumber')
+number = data_value.getint('Number')
+
+ser = serial.Serial(port, baudrate)
 
 with open('mentes.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
@@ -21,17 +33,17 @@ with open('mentes.csv', mode='w', newline='') as file:
             
             # ACCEL_X
             accel_x = float(data[1])
-            Calc_Accel_X = (accel_x * g) / (2**15)
+            Calc_Accel_X = (accel_x * gravitational_acceleration) / (square_number)
             data.append(Calc_Accel_X)
             
              # ACCEL_X
             accel_y = float(data[2])
-            Calc_Accel_Y = (accel_y * g) / (2**15)
+            Calc_Accel_Y = (accel_y * gravitational_acceleration) / (square_number)
             data.append(Calc_Accel_Y)
             
             # GYRO_z
             gyro_z = float(data[3])
-            Calc_Gyro_Z = (gyro_z * 250) / (2**15)
+            Calc_Gyro_Z = (gyro_z * number) / (square_number)
             data.append(Calc_Gyro_Z)
             
             # MAG_X_Y
@@ -42,3 +54,10 @@ with open('mentes.csv', mode='w', newline='') as file:
             
             writer.writerow(data)
             print(data)
+            
+#Print INI file
+print('Port = ' + port)
+print('Baudrate = ' + baudrate)
+print('Gravitational Acceleration = ' + gravitational_acceleration)
+print('Square Number = ' + square_number)
+print('Number = ' + number)
