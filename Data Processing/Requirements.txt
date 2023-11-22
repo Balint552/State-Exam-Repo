@@ -1,1 +1,0 @@
- A requirements tartalmazza a használt modulokat
