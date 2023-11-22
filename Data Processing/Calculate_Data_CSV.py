@@ -56,8 +56,8 @@ with open('mentes.csv', mode='w', newline='') as file:
             print(data)
             
 #Print INI file
-print('Port = ' + port)
-print('Baudrate = ' + baudrate)
-print('Gravitational Acceleration = ' + gravitational_acceleration)
-print('Square Number = ' + square_number)
-print('Number = ' + number)
+#print('Port = ' + port)
+#print('Baudrate = ' + baudrate)
+#print('Gravitational Acceleration = ' + gravitational_acceleration)
+#print('Square Number = ' + square_number)
+#print('Number = ' + number)
