@@ -112,7 +112,7 @@ void data_acquisition_task(void* parameter) {
   }
       /*****************************************************************/
 
-      packet.time_stamp = milliseconds/1000;
+      packet.time_stamp = milliseconds;
       packet.accel_x = (int32_t)(lsm6.a.x);
       packet.accel_y = (int32_t)(lsm6.a.y);
       packet.gyro_z = (int32_t)(lsm6.g.z);
