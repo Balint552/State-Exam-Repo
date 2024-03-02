@@ -64,6 +64,7 @@ union ble_data {
     int32_t gyro_z;
     int32_t mag_x;
     int32_t mag_y;
+    int32_t mag_z;
     char GPS_x[11];
     char GPS_y[11];
     float ACCEL_X_CALLC;
@@ -71,7 +72,7 @@ union ble_data {
     float GYRO_Z_CALLC;
     float MAG_XY_CALLC;
   };
-  uint8_t bytes[48];
+  uint8_t bytes[52];
 };
 
 // Idozito valtozok
@@ -85,7 +86,7 @@ EventGroupHandle_t xACQEventGroup;
 void IRAM_ATTR incrementMilliseconds() {
   milliseconds++;
 }
-// Adatgyujtes függveny
+// Adatgyujtes fuggveny
 void data_acquisition_task(void* parameter) {
   union ble_data packet;
   bool is_measurement_on = true;
@@ -121,13 +122,14 @@ void data_acquisition_task(void* parameter) {
       
       }
 
-      // Adatcsomag összeállítása
+      // Adatcsomag osszeallitasa
       packet.time_stamp = milliseconds;
       packet.accel_x = (int32_t)(lsm6.a.x);
       packet.accel_y = (int32_t)(lsm6.a.y);
       packet.gyro_z = (int32_t)(lsm6.g.z);
       packet.mag_x = (int32_t)(lis3mdl.m.x);
       packet.mag_y = (int32_t)(lis3mdl.m.y);
+      packet.mag_z = (int32_t)(lis3mdl.m.z);
       strcpy(packet.GPS_x, Latitude.c_str()); // Konvertaljuk a Stringet const char*-ra es masoljuk a tombbe
       strcpy(packet.GPS_y, Longitude.c_str()); // Konvertáljuk a Stringet const char*-ra es masoljuk a tombbe
       packet.ACCEL_X_CALLC = (float)((lsm6.a.x*g)/pow(2, 15));
@@ -135,7 +137,7 @@ void data_acquisition_task(void* parameter) {
       packet.GYRO_Z_CALLC = (float)((lsm6.g.z*250)/pow(2, 15));
       packet.MAG_XY_CALLC = (float)(atan2(lis3mdl.m.x,lis3mdl.m.y));
 
-      // Adatcsomag küldése soros porton
+      // Adatcsomag kuldese soros porton
       Serial.print(packet.time_stamp);
       Serial.print(",");
       Serial.print(packet.accel_x);
@@ -147,6 +149,8 @@ void data_acquisition_task(void* parameter) {
       Serial.print(packet.mag_x);
       Serial.print(",");
       Serial.print(packet.mag_y);
+      Serial.print(",");
+      Serial.print(packet.mag_z);
       Serial.print(",");
       Serial.print(packet.GPS_x);
       Serial.print(",");
